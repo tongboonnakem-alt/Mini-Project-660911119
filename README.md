@@ -48,9 +48,10 @@ API จะตอบ `400` เมื่อข้อมูลไม่ถูกต
 
 ```text
 Mini Project/
-|-- app.js
 |-- package.json
 |-- package-lock.json
+|-- server/
+|   `-- app.js
 |-- public/
 |   |-- index.html
 |   |-- style.css
@@ -63,11 +64,11 @@ Mini Project/
 
 ## ภาพการทำงาน
 
-### หน้าเว็บจัดการรายการ
+### ภาพการทำงานของหน้าเว็บ
 
 ![หน้าเว็บ Task Manager](docs/screenshots/01-task-manager.png)
 
-### ผลลัพธ์จาก GET พร้อม Query String
+### ภาพผลลัพธ์จาก GET พร้อม Query String
 
 เรียก `/api/tasks?done=false` เพื่อแสดงเฉพาะรายการที่ยังไม่เสร็จ
 

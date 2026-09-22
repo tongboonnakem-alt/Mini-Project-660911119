@@ -5,10 +5,9 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Resume API",
-      "program": "${workspaceFolder}/app.js",
+      "program": "${workspaceFolder}/server/app.js",
       "skipFiles": ["<node_internals>/**"],
       "env": { "PORT": "3001" }
     }
   ]
 }
-

@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3001;
 const categories = ['เรียน', 'งาน', 'ส่วนตัว'];
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 let tasks = [
   { id: 1, text: 'ทบทวนการสร้าง REST API', category: 'เรียน', done: true },

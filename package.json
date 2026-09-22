@@ -2,11 +2,11 @@
   "name": "mini-project",
   "version": "1.0.0",
   "description": "Full-stack task manager using Node.js, Express.js and a REST API",
-  "main": "app.js",
+  "main": "server/app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "check": "node --check app.js && node --check public/app.js"
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "check": "node --check server/app.js && node --check public/app.js"
   },
   "keywords": [],
   "author": "",

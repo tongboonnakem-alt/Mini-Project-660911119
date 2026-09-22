@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Mini Project ระบบจัดการรายการสิ่งที่ต้องทำด้วย Node.js, Express.js และ REST API">
+  <title>Mini Project | Task Manager</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">NODE.JS + EXPRESS.JS</p>
+      <h1>รายการสิ่งที่ต้องทำ</h1>
+      <p>เพิ่ม แก้ไข กรอง และลบรายการผ่าน REST API โดยข้อมูลบนหน้าเว็บเปลี่ยนทันทีโดยไม่ต้องโหลดหน้าใหม่</p>
+    </header>
+    <section class="panel" aria-labelledby="task-heading">
+      <div class="panel-heading">
+        <div><p class="section-label">MINI PROJECT</p><h2 id="task-heading">จัดการงานของฉัน</h2></div>
+        <span id="task-count" class="count-badge">0 รายการ</span>
+      </div>
+      <form id="task-form" class="task-form" novalidate>
+        <div class="field grow"><label for="task-input">ชื่องาน</label><input id="task-input" type="text" maxlength="120" placeholder="เช่น ทดสอบ REST API"></div>
+        <div class="field"><label for="category-input">หมวดหมู่</label><select id="category-input"><option value="เรียน">เรียน</option><option value="งาน">งาน</option><option value="ส่วนตัว">ส่วนตัว</option></select></div>
+        <button class="primary" type="submit">+ เพิ่มรายการ</button>
+      </form>
+      <p id="form-error" class="form-error" role="alert"></p>
+      <div class="toolbar">
+        <div class="filters" aria-label="กรองสถานะ"><button type="button" class="filter active" data-filter="all">ทั้งหมด</button><button type="button" class="filter" data-filter="false">ยังไม่เสร็จ</button><button type="button" class="filter" data-filter="true">เสร็จแล้ว</button></div>
+        <button id="refresh-button" class="refresh" type="button">รีเฟรช</button>
+      </div>
+      <div id="loading" class="state-message" hidden>กำลังโหลดข้อมูล...</div>
+      <div id="api-error" class="state-message error" role="alert" hidden></div>
+      <ul id="task-list" class="task-list" aria-live="polite"></ul>
+      <div id="empty" class="state-message" hidden>ยังไม่มีรายการในหมวดนี้</div>
+    </section>
+    <footer>ข้อมูลเก็บในหน่วยความจำและจะกลับเป็นค่าเริ่มต้นเมื่อเริ่มเซิร์ฟเวอร์ใหม่</footer>
+  </main>
+  <dialog id="edit-dialog">
+    <form id="edit-form" method="dialog">
+      <h2>แก้ไขรายการ</h2><input id="edit-id" type="hidden">
+      <div class="field"><label for="edit-text">ชื่องาน</label><input id="edit-text" maxlength="120"></div>
+      <div class="field"><label for="edit-category">หมวดหมู่</label><select id="edit-category"><option>เรียน</option><option>งาน</option><option>ส่วนตัว</option></select></div>
+      <p id="edit-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions"><button id="cancel-edit" type="button" class="secondary">ยกเลิก</button><button type="submit" class="primary">บันทึก</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

@@ -1,22 +1,29 @@
 {
-  "name": "mini-project",
+  "name": "burger-orbit",
   "version": "1.0.0",
-  "description": "Full-stack task manager using Node.js, Express.js and a REST API",
-  "main": "server/app.js",
+  "private": true,
+  "description": "เกมประกอบเบอร์เกอร์ Full-stack ด้วย React, GSAP และ Express REST API",
   "scripts": {
+    "dev": "concurrently -k \"nodemon server/app.js\" \"vite --config client/vite.config.ts\"",
     "start": "node server/app.js",
-    "dev": "nodemon server/app.js",
-    "check": "node --check server/app.js && node --check public/app.js"
+    "build": "vite build --config client/vite.config.ts",
+    "check": "tsc -p client/tsconfig.json --noEmit && node --check server/app.js",
+    "test": "node tests/api-smoke.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "gsap": "^3.13.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.0.4",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9"
   }
 }

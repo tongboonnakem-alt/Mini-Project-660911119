@@ -12,5 +12,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    // Phaser is loaded only when Quest Mode starts; its engine bundle is intentionally larger.
+    chunkSizeWarningLimit: 1800,
   },
 });

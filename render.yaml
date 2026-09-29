@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: burger-orbit-660911119
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/burgers
+

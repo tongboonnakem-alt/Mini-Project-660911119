@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { Category, Ingredient, ScoreResult } from "./types";
+import PhaserWorld from "./PhaserWorld";
 
 type Props = {
   name: string;
@@ -30,9 +31,9 @@ type BattleState = {
 };
 
 const monsters: Monster[] = [
-  { id: 1, name: "กระเทียมคลั่ง", title: "ผู้เฝ้าทางแยก", image: "/ingredients/chaos-garlic-fighter.png", x: 48, y: 68, maxHp: 72, attack: 12, reward: 35 },
-  { id: 2, name: "คุณชายมันทอด", title: "อัศวินแห่งครัวไหม้", image: "/ingredients/chaos-potato-gentleman.png", x: 73, y: 38, maxHp: 96, attack: 16, reward: 55 },
-  { id: 3, name: "ราชินีมะเขือม่วง", title: "บอสแห่งสวนพิศวง", image: "/ingredients/chaos-eggplant-queen.png", x: 34, y: 25, maxHp: 128, attack: 20, reward: 100 },
+  { id: 1, name: "กระเทียมคลั่ง", title: "ผู้เฝ้าทางแยก", image: "/ingredients/chaos-garlic-fighter.png", x: 850, y: 790, maxHp: 72, attack: 12, reward: 35 },
+  { id: 2, name: "คุณชายมันทอด", title: "อัศวินแห่งครัวไหม้", image: "/ingredients/chaos-potato-gentleman.png", x: 1290, y: 480, maxHp: 96, attack: 16, reward: 55 },
+  { id: 3, name: "ราชินีมะเขือม่วง", title: "บอสแห่งสวนพิศวง", image: "/ingredients/chaos-eggplant-queen.png", x: 650, y: 250, maxHp: 128, attack: 20, reward: 100 },
 ];
 
 const delay = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -57,42 +58,18 @@ function BurgerFighter({ selected, side = "left", hit = false }: { selected: Pro
 export default function BurgerQuest({ name, score, selected, onExit }: Props) {
   const maxHp = Math.round(90 + score.balance * .45);
   const baseAttack = Math.round(12 + score.taste * .11);
-  const [position, setPosition] = useState({ x: 17, y: 78 });
-  const [direction, setDirection] = useState("down");
-  const [walking, setWalking] = useState(false);
   const [defeated, setDefeated] = useState<number[]>([]);
   const [xp, setXp] = useState(0);
   const [battle, setBattle] = useState<BattleState | null>(null);
   const [playerHit, setPlayerHit] = useState(false);
   const [enemyHit, setEnemyHit] = useState(false);
-  const [showHelp, setShowHelp] = useState(true);
+  const [resetNonce, setResetNonce] = useState(0);
 
-  const move = useCallback((dx: number, dy: number) => {
+  const startBattle = (monsterId: number) => {
     if (battle) return;
-    setShowHelp(false);
-    setDirection(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up"));
-    setWalking(true);
-    setPosition((current) => ({ x: clamp(current.x + dx, 7, 93), y: clamp(current.y + dy, 12, 88) }));
-    window.setTimeout(() => setWalking(false), 180);
-  }, [battle]);
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      const keys: Record<string, [number, number]> = { ArrowUp: [0,-4], w: [0,-4], ArrowDown: [0,4], s: [0,4], ArrowLeft: [-4,0], a: [-4,0], ArrowRight: [4,0], d: [4,0] };
-      const movement = keys[event.key];
-      if (movement) { event.preventDefault(); move(...movement); }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [move]);
-
-  useEffect(() => {
-    if (battle) return;
-    const target = monsters.find((monster) => !defeated.includes(monster.id) && Math.hypot(position.x - monster.x, position.y - monster.y) < 9);
-    if (target) {
-      setBattle({ monster: target, playerHp: maxHp, enemyHp: target.maxHp, turn: "player", guard: false, log: [`${target.name} ขวางทาง!`, `${name} พร้อมต่อสู้`] });
-    }
-  }, [position, battle, defeated, maxHp, name]);
+    const target = monsters.find((monster) => monster.id === monsterId && !defeated.includes(monster.id));
+    if (target) setBattle({ monster: target, playerHp: maxHp, enemyHp: target.maxHp, turn: "player", guard: false, log: [`${target.name} ขวางทาง!`, `${name} พร้อมต่อสู้`] });
+  };
 
   const skills = useMemo(() => [
     { id: "smash", icon: "💥", name: "เบอร์เกอร์พุ่งชน", desc: `โจมตีตรง ${baseAttack}–${baseAttack + 8}`, kind: "attack" },
@@ -135,8 +112,8 @@ export default function BurgerQuest({ name, score, selected, onExit }: Props) {
     if (!battle) return;
     const won = battle.enemyHp <= 0;
     if (won && defeated.length === monsters.length) return;
-    setPosition({ x: clamp(battle.monster.x - 12, 7, 93), y: clamp(battle.monster.y + 8, 12, 88) });
     setBattle(null);
+    setResetNonce((value) => value + 1);
   };
 
   const restartBattle = () => {
@@ -160,25 +137,8 @@ export default function BurgerQuest({ name, score, selected, onExit }: Props) {
           <h1>ฝ่าด่านสวนครัวพิศวง</h1>
           <span>{defeated.length}/{monsters.length} มอนสเตอร์ถูกปรุง</span>
         </div>
-        <div className="world-map">
-          <div className="map-road road-one" /><div className="map-road road-two" />
-          <div className="map-pond" /><div className="map-shop">🍟<span>ร้านเติมพลัง</span></div>
-          {[...Array(15)].map((_, index) => <i key={index} className={`map-tree tree-${index}`}>♣</i>)}
-          {monsters.map((monster) => !defeated.includes(monster.id) && (
-            <button key={monster.id} className="map-monster" style={{ left: `${monster.x}%`, top: `${monster.y}%` }} onClick={() => setPosition({ x: monster.x - 5, y: monster.y + 3 })}>
-              <img src={monster.image} alt={monster.name} /><span>!</span><small>{monster.name}</small>
-            </button>
-          ))}
-          <div className={`map-player face-${direction} ${walking ? "walking" : ""}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}>
-            <BurgerFighter selected={selected} />
-            <b>{name}</b>
-          </div>
-          {showHelp && <div className="walk-tip">ใช้ WASD / ลูกศรเพื่อเดิน<br /><small>เดินเข้าใกล้มอนสเตอร์เพื่อเริ่มต่อสู้</small></div>}
-        </div>
-        <div className="d-pad" aria-label="ปุ่มควบคุมการเดิน">
-          <button onClick={() => move(0,-4)}>▲</button>
-          <button onClick={() => move(-4,0)}>◀</button><button onClick={() => move(0,4)}>▼</button><button onClick={() => move(4,0)}>▶</button>
-        </div>
+        <PhaserWorld playerName={name} selected={selected} monsters={monsters} defeated={defeated} resetNonce={resetNonce} onEncounter={startBattle} />
+        <div className="walk-tip">WASD / ลูกศร หรือปุ่มด้านขวาเพื่อเดิน<br /><small>สำรวจแผนที่และเดินชนมอนสเตอร์เพื่อเริ่มต่อสู้</small></div>
       </section>
 
       {battle && (

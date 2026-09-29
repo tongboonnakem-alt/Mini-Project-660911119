@@ -18,3 +18,12 @@ These images are used for an educational student project and stored locally so t
   https://toppng.com/free-image/so%C4%9Fan-halqalar%C4%B1-battered-squid-rings-PNG-free-PNG-Images_243032
 
 Check each source’s current license and attribution terms before any commercial use.
+
+## ชุดภาพเกมฟรี
+
+- Kenney Roguelike/RPG Pack — ไทล์แผนที่และฉาก RPG จำนวน 1,700 ไฟล์, ใบอนุญาต Creative Commons CC0 1.0  
+  https://kenney.nl/assets/roguelike-rpg-pack
+- Kenney UI Pack — ปุ่ม ลูกศร ฟอนต์ และองค์ประกอบ UI จำนวน 430 ไฟล์, ใบอนุญาต Creative Commons CC0 1.0  
+  https://kenney.nl/assets/ui-pack
+
+สำเนาใบอนุญาตต้นฉบับอยู่ที่ `client/public/kenney/rpg/License.txt` และ `client/public/kenney/ui/License.txt`

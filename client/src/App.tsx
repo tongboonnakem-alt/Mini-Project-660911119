@@ -3,6 +3,7 @@ import BurgerStack from "./BurgerStack";
 import OrbitPicker from "./OrbitPicker";
 import SavedRecipes from "./SavedRecipes";
 import ScorePanel from "./ScorePanel";
+import BurgerQuest from "./BurgerQuest";
 import { byCategory, categoryMeta, categoryOrder, scoreBurger } from "./ingredients";
 import type { BurgerRecord, Category, Ingredient, ScoreResult } from "./types";
 
@@ -27,6 +28,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [questMode, setQuestMode] = useState(false);
   const category = categoryOrder[Math.min(step, categoryOrder.length - 1)];
   const meta = categoryMeta[category];
   const complete = categoryOrder.every((key) => selected[key]);
@@ -94,6 +96,10 @@ export default function App() {
 
   const progress = (Object.keys(selected).length / categoryOrder.length) * 100;
 
+  if (questMode && score) {
+    return <BurgerQuest name={name} score={score} selected={selected} onExit={() => { setQuestMode(false); reset(); }} />;
+  }
+
   return (
     <>
       <header className="topbar">
@@ -148,7 +154,7 @@ export default function App() {
         <SavedRecipes recipes={recipes} loading={loading} onDelete={deleteRecipe} onRename={renameRecipe} />
       </main>
       <footer><b>BURGER ORBIT</b><span>Node.js · Express · React · GSAP</span><span>ภาพวัตถุดิบใช้เพื่อการศึกษา · ดูแหล่งที่มาใน assets/SOURCES.md</span></footer>
-      {score && <ScorePanel score={score} name={name} onClose={reset} />}
+      {score && <ScorePanel score={score} name={name} onClose={reset} onPlay={() => { setQuestMode(true); window.scrollTo(0, 0); }} />}
     </>
   );
 }

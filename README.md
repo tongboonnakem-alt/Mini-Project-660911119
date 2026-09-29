@@ -1,5 +1,7 @@
 # Burger Orbit — เกมประกอบเบอร์เกอร์หลุดโลก
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Ftongboonnakem-alt%2FMini-Project-660911119)
+
 เว็บแอปพลิเคชันแบบ Full-stack สำหรับเลือกวัตถุดิบจากวงโคจร แล้วประกอบเป็นเบอร์เกอร์แบบเรียงชั้นจากบนลงล่าง เมื่อกด **ประกอบร่าง** ระบบจะรวมชั้นอาหารด้วยแอนิเมชัน คำนวณคะแนนเต็ม 100 และจัดอันดับตั้งแต่ `F` ถึง `SS+`
 
 ![หน้าสร้างเบอร์เกอร์](docs/01-burger-builder.png)

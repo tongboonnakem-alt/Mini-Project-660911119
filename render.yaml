@@ -2,14 +2,9 @@ services:
   - type: web
     name: burger-orbit-660911119
     runtime: node
-    repo: https://github.com/tongboonnakem-alt/Mini-Project-660911119
-    branch: main
     plan: free
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /api/burgers
     autoDeployTrigger: commit
-    envVars:
-      - key: NODE_ENV
-        value: production
 

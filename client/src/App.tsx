@@ -5,10 +5,9 @@ import SavedRecipes from "./SavedRecipes";
 import ScorePanel from "./ScorePanel";
 import { byCategory, categoryMeta, categoryOrder, scoreBurger } from "./ingredients";
 import type { BurgerRecord, Category, Ingredient, ScoreResult } from "./types";
-import { readAdventure } from "./questModel";
 
 const funnyNames = ["ดาวเสาร์กัดได้", "คราเคนติดชีส", "ก้อนปั่นแห่งจักรวาล", "เบอร์เกอร์เชฟลาออก", "คำแรกว้าวคำสองงง"];
-const BurgerQuest = lazy(() => import("./EmberQuest"));
+const BurgerQuest = lazy(() => import("./BurgerQuest"));
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
   const response = await fetch(path, options);
@@ -98,12 +97,11 @@ export default function App() {
   const progress = (Object.keys(selected).length / categoryOrder.length) * 100;
 
   if (questMode && score) {
-    return <Suspense fallback={<main className="quest-loading"><span>BURGER ORBIT</span><b>กำลังเปิดแผนที่ผจญภัย…</b></main>}><BurgerQuest name={name} score={score} selected={selected} onExit={() => { setQuestMode(false); }} /></Suspense>;
+    return <Suspense fallback={<main className="quest-loading"><span>BURGER ORBIT</span><b>กำลังเปิดแผนที่ผจญภัย…</b></main>}><BurgerQuest name={name} score={score} selected={selected} onExit={() => { setQuestMode(false); reset(); }} /></Suspense>;
   }
 
   return (
     <>
-      {readAdventure() && <button className="resume-quest" onClick={() => { const saved = readAdventure(); if (saved) { setName(saved.profile.name); setSelected(saved.profile.selected); setScore(saved.profile.score); setQuestMode(true); } }}>✦ เล่นสวนเตาไฟต่อ</button>}
       <header className="topbar">
         <a className="brand" href="#top"><span>BO</span><div><b>BURGER ORBIT</b><small>BUILD · STACK · RATE</small></div></a>
         <div className="header-score"><span>คะแนนสด</span><b>{localScore.total}</b><small>/100</small></div>

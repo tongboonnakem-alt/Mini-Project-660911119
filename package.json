@@ -8,7 +8,7 @@
     "start": "node server/app.js",
     "build": "vite build --config client/vite.config.ts",
     "check": "tsc -p client/tsconfig.json --noEmit && node --check server/app.js",
-    "test": "node tests/api-smoke.js"
+    "test": "node tests/api-smoke.js && node tests/quest-model.cjs"
   },
   "dependencies": {
     "cors": "^2.8.6",

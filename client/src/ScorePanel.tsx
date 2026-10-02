@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { ScoreResult } from "./types";
 
-type Props = { score: ScoreResult; name: string; onClose: () => void; onPlay: () => void };
+type Props = { score: ScoreResult; name: string; onClose: () => void };
 
-export default function ScorePanel({ score, name, onClose, onPlay }: Props) {
+export default function ScorePanel({ score, name, onClose }: Props) {
   const [shown, setShown] = useState(0);
   useEffect(() => {
     let frame = 0;
@@ -33,8 +33,7 @@ export default function ScorePanel({ score, name, onClose, onPlay }: Props) {
         <div className="score-meta"><span>🔥 {score.calories} kcal</span><span>🧪 โบนัส {score.bonuses.length}</span></div>
         {score.bonuses.length > 0 && <ul className="bonus-list">{score.bonuses.map((bonus) => <li key={bonus}>{bonus}</li>)}</ul>}
         <div className="score-actions">
-          <button className="primary-button" onClick={onPlay}>ออกผจญภัย →</button>
-          <button className="secondary-button" onClick={onClose}>สร้างตัวใหม่</button>
+          <button className="primary-button" onClick={onClose}>สร้างเบอร์เกอร์ชิ้นใหม่ →</button>
         </div>
       </section>
     </div>
